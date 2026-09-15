@@ -1,0 +1,7 @@
+numpy==2.4.3
+opencv-python==4.13.0.92
+pandas==3.0.1
+pygbag==0.9.3
+ultralytics==8.4.153
+ultralytics-platform==0.1.41
+ultralytics-thop==2.1.6

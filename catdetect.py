@@ -18,7 +18,5 @@ cv2.imshow("Resized Image", resized_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
-
 # Run the model on it
 # Return Weather cat is there
