@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 
 # Load the image
-image = cv2.imread("data/minnak.png")
+image = cv2.imread("data/poncik.jpg")
  
 # Get the original dimensions
 original_height, original_width = image.shape[:2]
@@ -27,6 +27,22 @@ model = YOLO("yolo11s.pt")
 
 # Predict and filter for class 15 (cat)
 results = model.predict("data/resizedImage.jpg", classes=[15])
+# Process resaults
+for result in results:
+    boxes = result.boxes
+    for box in boxes:
+        # Extract coordinates
+        # xyxy format: [xmin, ymin, xmax, ymax]
+        xmin, ymin, xmax, ymax = map(int, box.xyxy[0])
+        
+        # Get confidence score
+        confidence = float(box.conf[0])
+        
+        print(f"Cat detected with {confidence:.2f} confidence.")
+        print(f"Coordinates: Top-Left ({xmin}, {ymin}), Bottom-Right ({xmax}, {ymax})")
+
+# Save or display the result
+cv2.imwrite("data/detected_cat.jpg", image)
 
 # Show or save the results
 results[0].show()
