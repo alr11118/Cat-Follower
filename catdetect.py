@@ -1,5 +1,12 @@
 import cv2
 from ultralytics import YOLO
+from enum import Enum
+
+class Direction(Enum):
+    RIGTH = "RIGTH"
+    LEFT = "LEFT"
+    TOP = "TOP"
+    BOTTOM = "BOTTOM"
 
 def findCenterOfBox(xmin, ymin, xmax, ymax):
     width = xmax-xmin
@@ -7,9 +14,22 @@ def findCenterOfBox(xmin, ymin, xmax, ymax):
     midPoint = (xmin+width//2, ymin+height//2)
     return midPoint
 
+def getDirection(cat, screenDimentions):
+    if(cat[0] < screenDimentions[0]//4):
+        return Direction.LEFT
+    elif(cat[0] > screenDimentions[0]//(4/3)):
+        return Direction.RIGTH
+    elif(cat[1] < screenDimentions[1]//4):
+        return Direction.TOP
+    elif(cat[1] > screenDimentions[1]//(4/3)):
+        return Direction.BOTTOM
+    else:
+        return "CENTERED"
+
+
 def main():
     # Load the image
-    image = cv2.imread("data/poncik.jpg")
+    image = cv2.imread("data/cats.jpg")
     
     # Get the original dimensions
     original_height, original_width = image.shape[:2]
@@ -49,6 +69,8 @@ def main():
             print(f"Coordinates: Top-Left ({xmin}, {ymin}), Bottom-Right ({xmax}, {ymax})")
             midPoint = findCenterOfBox(xmin, ymin, xmax, ymax)
             print(f"Midpoint of bounding box({midPoint})")
+            direction = getDirection(midPoint, (new_width, new_height))
+            print(direction)
 
     # Save or display the result
     cv2.imwrite("data/detected_cat.jpg", image)
