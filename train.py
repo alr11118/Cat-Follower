@@ -21,6 +21,7 @@ results = model.predict(
     conf=0.4,
     save=True
 )
+print("Prediction for test.jpg (A Chamomille)", results)
 
 # 5. Export the trained model for Raspberry Pi
 model.export(format="ncnn")
