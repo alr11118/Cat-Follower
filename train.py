@@ -1,22 +1,26 @@
-# Load Data Set
-# Set up model
-# 'Train' it????
-# Test it???
-# Export it to be used on the Raspberry Pi
 from ultralytics import YOLO
 
-# 1. Load pre-trained Nano model
-model = YOLO("yolo11n.pt") 
+# 1. Load pretrained Nano model
+model = YOLO("yolo11n.pt")
 
-# 2. Train on custom dataset
+# 2. Train on your custom dataset
 results = model.train(
-    data="data.yaml", 
-    epochs=100, 
-    imgsz=640, 
-    batch=16, 
-    device="mps" # Use 0 for Nvidia GPU, 'mps' for Apple Silicon, or 'cpu'
+    data="data.yaml",
+    epochs=20,
+    imgsz=640,
+    batch=16,
+    device="mps"
 )
 
-# 3. Export to NCNN format for maximum CPU speed
+# 3. Load the BEST model produced during training
+model = YOLO("runs/detect/train/weights/best.pt")
+
+# 4. Test on a new image
+results = model.predict(
+    source="test.jpg",
+    conf=0.4,
+    save=True
+)
+
+# 5. Export the trained model for Raspberry Pi
 model.export(format="ncnn")
-# how to text?
